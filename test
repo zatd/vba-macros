@@ -1,17 +1,42 @@
 Sub test()
     
-    'THIS STILL NOT WORKING PROPERLY
-    'Ctrl + Shift + Down (Range should be first cell in data set)
-    LastRow = sht.Range("B2").CurrentRegion.Rows.Count
-    
     'Insert column to the right of the active cell
     ActiveCell.EntireColumn.Offset(0, 1).Insert
     
     'Insert formula in first cell
     ActiveCell.Offset(0, 1).Select
     ActiveCell.FormulaR1C1 = "=IF(RC[-1]>2,2,CEILING(RC[-1],0.5))"
+
     
     'Fill formula to whole row
-    Selection.AutoFill Destination:=Range("C2:C" & Range("E" & Rows.Count).End(xlUp).Row)
+    Selection.AutoFill Destination:=Range("C2:C" & Range("B" & Rows.Count).End(xlDown).Row)
     Range(Selection, Selection.End(xlDown)).Select
+    
+End Sub
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub CountRows1()
+
+    Dim last_row As Long
+    '''''''''''''''''''''''''''''v-----this number determines what column
+    last_row = Cells(Rows.Count, 2).End(xlUp).Row
+    MsgBox (last_row)
+    
+End Sub
+'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
+Sub newer()
+    
+    Dim last_row As Long
+    '''''''''''''''''''''''''''''v-----this number determines what column
+    last_row = Cells(Rows.Count, 12).End(xlUp).Row
+    
+    'Insert formula in first cell
+    Range("P2").Value = "=IF(RC[-4]>2,2,CEILING(RC[-4],0.5))"
+    'Autofill rest of column
+    Range("P2").AutoFill Destination:=Range("P2:P" & last_row), Type:=xlFillSeries
+    
+    'Insert formula in first cell M2*P2*(1-N2)
+    Range("Q2").Value = "=RC[-4]*RC[-1]*(1-RC[-3])"
+    'Autofill rest of column
+    Range("Q2").AutoFill Destination:=Range("Q2:Q" & last_row), Type:=xlFillSeries
+    
 End Sub
